@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Event extends Model
+class Attendee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'start_time', 'end_time', 'user_id'];
+    protected $fillable = ['user_id'];
 
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function event() : HasMany
+    public function attendees() : HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Attendee::class);
     }
 }
