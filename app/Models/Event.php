@@ -13,13 +13,13 @@ class Event extends Model
 
     protected $fillable = ['name', 'description', 'start_time', 'end_time', 'user_id'];
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function event() : HasMany
+    public function attendees(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Attendee::class);
     }
 }
