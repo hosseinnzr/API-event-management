@@ -4,16 +4,26 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
+use App\Http\Traits\CanLoadRelationships;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    use CanLoadRelationships;
+
+    // private readonly array $relations = ['user', 'attendees', 'attendees.user'];
+    private array $relations = ['user', 'attendees', 'attendees.user'];
+
     public function index()
     {
+        $query = $this->loadRelationships(Event::query());
+
         // return Event::all();
-        return EventResource::collection(Event::with('user')->get());
-    }
+        return EventResource::collection($query->latest()->paginate());
+    }  
+    // http://127.0.0.1:8000/api/events?include=user,attendees,attendees.user // GET method // filter to load user and attendees like : http://127.0.0.1:8000/api/events?include=attendees
+
 
     public function store(Request $request)
     {
@@ -28,13 +38,12 @@ class EventController extends Controller
         ]);
 
         // return $event;
-        return new EventResource($event);
-    }
+        return new EventResource($this->loadRelationships($event));
+    } // http://127.0.0.1:8000/api/events?include=user
 
     public function show(Event $event)
     {
-        $event->load('user', 'attendees');
-        return new EventResource($event);
+        return new EventResource($this->loadRelationships($event));
     }
 
     public function update(Request $request, Event $event)
@@ -49,7 +58,7 @@ class EventController extends Controller
         );
 
         // return $event;
-        return new EventResource($event);
+        return new EventResource($this->loadRelationships($event));
 
     }           
 
