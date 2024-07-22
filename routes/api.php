@@ -25,7 +25,6 @@ http://127.0.0.1:8000/api/login | POST method | in Headers add =>>> key:Accept a
 */
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-// Route:
 
 Route::apiResource('events', EventController::class)->only(['index', 'show']);
 Route::apiResource('events', EventController::class)->except(['index', 'show'])->middleware('auth:sanctum');
