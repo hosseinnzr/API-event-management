@@ -7,19 +7,23 @@ use App\Http\Resources\EventResource;
 use App\Http\Traits\CanLoadRelationships;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
+
+
 
 class EventController extends Controller
 {
     use CanLoadRelationships;
 
-    // private readonly array $relations = ['user', 'attendees', 'attendees.user'];
+    // public function __construct(){
+    //     $this->middleware('auth:sanctum')->except(['index', 'show']);
+    // } not wok :(
     private array $relations = ['user', 'attendees', 'attendees.user'];
 
     public function index()
     {
         $query = $this->loadRelationships(Event::query());
 
-        // return Event::all();
         return EventResource::collection($query->latest()->paginate());
     }  
     // http://127.0.0.1:8000/api/events?include=user,attendees,attendees.user // GET method // filter to load user and attendees like : http://127.0.0.1:8000/api/events?include=attendees
@@ -34,10 +38,9 @@ class EventController extends Controller
                 'start_time' => 'required|date',
                 'end_time' => 'required|date|after:start_time'
             ]),
-            'user_id' => 1
+            'user_id' => $request->user()->id,
         ]);
 
-        // return $event;
         return new EventResource($this->loadRelationships($event));
     } // http://127.0.0.1:8000/api/events?include=user
 
@@ -68,5 +71,6 @@ class EventController extends Controller
 
         // return response()->json(['massage' => 'Event deleted successfully']);
         return response(status: 204);
+        // return new EventResource($this->loadRelationships($event));
     }
 }
