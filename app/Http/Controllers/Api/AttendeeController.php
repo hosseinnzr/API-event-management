@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Attendee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\AttendeeResource;
 use App\Http\Traits\CanLoadRelationships;
 
@@ -55,6 +56,10 @@ class AttendeeController extends Controller
 
     public function destroy(Event $event, Attendee $attendee)
     {
+        if(Gate::denies("delete-attendee", [$event, $attendee])){
+            abort(403, 'You are not authorized to detele this attendee.');
+        }
+        
         $attendee->delete();
 
         return response(status: 204);

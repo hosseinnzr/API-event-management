@@ -30,5 +30,5 @@ Route::apiResource('events', EventController::class)->only(['index', 'show']);
 Route::apiResource('events', EventController::class)->except(['index', 'show'])->middleware('auth:sanctum');
 
 // Route::apiResource('events.attendees', AttendeeController::class)->scoped(['attendee' => 'event']); 
-Route::apiResource('events.attendees', AttendeeController::class)->scoped()->except(['update']); 
-
+Route::apiResource('events.attendees', AttendeeController::class)->scoped()->except(['update'])->only(['index', 'show', 'store']); 
+Route::apiResource('events.attendees', AttendeeController::class)->scoped()->only(['destroy'])->middleware('auth:sanctum'); 
