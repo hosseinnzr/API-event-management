@@ -14,6 +14,11 @@ class AttendeeController extends Controller
 {
     use CanLoadRelationships;
 
+    public function __construct(){
+        // $this->middleware('auth:sanctum')->except(['index', 'show', 'update]); not wok :(
+        // $this->authorizeResource(Event::class, 'attendee'); not wok :(
+    }
+    
     private array $relations = ['user'];
 
     public function index(Event $event) 
