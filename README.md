@@ -1,6 +1,7 @@
 1. php artisan make:model Event -m 
 2. php artisan make:controller Api/AttendeeController --api
 3. php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+4. always run php artisan queue:work
 
 
 
