@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Event;
 use App\Models\Attendee;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -13,10 +14,11 @@ use App\Http\Traits\CanLoadRelationships;
 class AttendeeController extends Controller
 {
     use CanLoadRelationships;
+    use AuthorizesRequests;
 
     public function __construct(){
         // $this->middleware('auth:sanctum')->except(['index', 'show', 'update]); not wok :(
-        // $this->authorizeResource(Event::class, 'attendee'); not wok :(
+        $this->authorizeResource(Event::class, 'attendee');
     }
     
     private array $relations = ['user'];
